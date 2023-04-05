@@ -1,15 +1,11 @@
 import requests
 import time
 import json
-import os
 
-from dotenv import load_dotenv
-from os import path
 
 from kafka_producer import MessageProducer
-
-basedir = path.abspath(path.dirname(__file__))
-load_dotenv(path.join(basedir, '.env'))
+from helpers import get_appid
+from config import Config
 
 json_message = None
 city_name = None
@@ -30,3 +26,16 @@ def get_weather_detail(openweathermap_api_endpoint):
                     "Humidity": humidity,
                     "CreationTime": time.strftime("%Y-%m-%d %H:%M:%S")}
     return json_message
+
+
+while True:
+    city_name = "Chennai"
+    appid = get_appid()
+    openweathermap_api_endpoint = f"http://api.openweathermap.org/data/2.5/weather?appid={appid}&q={city_name}"
+    json_message = get_weather_detail(openweathermap_api_endpoint)
+    config = Config()
+    message_producer = MessageProducer(config.broker, config.topic)
+    message_producer.send_msg(json_message)
+    print("Published message 1: " + json.dumps(json_message))
+    print("Wait for 2 seconds ...")
+    time.sleep(60)
