@@ -29,13 +29,14 @@ def get_weather_detail(openweathermap_api_endpoint):
 
 
 while True:
-    city_name = "Chennai"
+    city_name = "Warsaw"
+    units = "metric"
     appid = get_appid()
-    openweathermap_api_endpoint = f"http://api.openweathermap.org/data/2.5/weather?appid={appid}&q={city_name}"
+    openweathermap_api_endpoint = f"http://api.openweathermap.org/data/2.5/weather?appid={appid}&q={city_name}&units={units}"
     json_message = get_weather_detail(openweathermap_api_endpoint)
     config = Config()
     message_producer = MessageProducer(config.broker, config.topic)
     message_producer.send_msg(json_message)
     print("Published message 1: " + json.dumps(json_message))
-    print("Wait for 2 seconds ...")
+    print("Wait for 60 seconds ...")
     time.sleep(60)
