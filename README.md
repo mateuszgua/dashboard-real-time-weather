@@ -24,7 +24,8 @@
 
 ## Features
 List the ready features here:
-
+- connection with openweathermap api,
+- kafka producer
 
 ## Screenshots
 ![Example screenshot](#)
